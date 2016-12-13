@@ -1,6 +1,12 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
@@ -860,7 +866,117 @@ public class TestURI {
 		assertArrayEquals(s, uri.segments());
 	}
 	
+	//Test de SegmentsList()
+	@Test(expected=UnsupportedOperationException.class)
+	public void testSegmentsList1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		List<String> s = uri.segmentsList();
+		s.add("truc");
+	}
+	@Test
+	public void testSegmentsList2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		List<String> s = new ArrayList<String>();
+		s.add("foo");
+		s.add("bar");
+		assertEquals(s, uri.segmentsList());
+	}
 	
+	//Test de segmentCount()
+	@Test
+	public void testSegmentCount1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals(2, uri.segmentCount());
+	}
+	
+	//Test de segment(int i)
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testSegment1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("bar", uri.segment(2));
+	}
+	@Test
+	public void testSegment2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("bar", uri.segment(1));
+	}
+	
+	//Test de lastSegment()
+	@Test
+	public void testLastSegment1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals(null, uri.lastSegment());
+	}
+	@Test
+	public void testLastSegment2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("bar", uri.lastSegment());
+	}
+	
+	//Test de path()
+	@Test
+	public void testPath1(){
+		String scheme = "scheme";
+		String opaquePart = "opaque";
+		String fragment = "fragment";
+		URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
+		assertEquals(null, uri.path());
+	}	
+	@Test
+	public void testPath2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("/foo/bar", uri.path());
+	}
+	
+	//Test de devicePath()
 	
 	//Test de isRelative()
 	@Test
