@@ -13,6 +13,22 @@ import org.junit.Test;
 
 public class TestURI {
 
+	//Test de toString
+	@Test
+	public void testToString1(){
+		String value = "foo://truc/bidule/machin";
+		URI uri1 = URI.createURI(value);
+		URI uri2 = URI.createURI(value+"3");
+		assertFalse(uri1.toString().equals(uri2.toString()));
+	}
+	@Test
+	public void testToString2(){
+		String value = "foo://truc/bidule/machin";
+		URI uri1 = URI.createURI(value);
+		URI uri2 = URI.createURI(value);
+		assertEquals(uri1.toString(), uri2.toString());
+	}
+	
 	//Test de validFragment(String value)
 	@Test
 	public void testValidFragment1(){
@@ -654,38 +670,6 @@ public class TestURI {
 		assertTrue(uri.isArchive());
 	}
 	
-	//Test de toString
-	@Test
-	public void testToString1(){
-		String value = "foo://truc/bidule/machin";
-		URI uri1 = URI.createURI(value);
-		URI uri2 = URI.createURI(value+"3");
-		assertFalse(uri1.toString().equals(uri2.toString()));
-	}
-	@Test
-	public void testToString2(){
-		String value = "foo://truc/bidule/machin";
-		URI uri1 = URI.createURI(value);
-		URI uri2 = URI.createURI(value);
-		assertEquals(uri1.toString(), uri2.toString());
-	}
-	
-	//Test de toFileString
-	@Test
-	public void testToFileString1(){
-		String value = "/truc/bidule/machin";
-		URI uri1 = URI.createFileURI(value);
-		URI uri2 = URI.createFileURI(value+"3");
-		assertFalse(uri1.toFileString().equals(uri2.toFileString()));
-	}
-	@Test
-	public void testToFileString2(){
-		String value = "/truc/bidule/machin";
-		URI uri1 = URI.createFileURI(value);
-		URI uri2 = URI.createFileURI(value);
-		assertEquals(uri1.toFileString(), uri2.toFileString());
-	}
-	
 	//Test de hashCode
 	@Test
 	public void testHashCode1(){
@@ -977,6 +961,405 @@ public class TestURI {
 	}
 	
 	//Test de devicePath()
+	
+	//Test de query()
+	@Test
+	public void testQuery1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = null;
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals(null, uri.query());
+	}
+	@Test
+	public void testQuery2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("query", uri.query());
+	}
+	
+	//Test de appendQuery(String query)
+	@Test(expected=IllegalArgumentException.class)
+	public void testAppendQuery1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = null;
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendQuery("query#truc");
+	}
+	@Test
+	public void testAppendQuery2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query1";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendQuery("query");
+		assertEquals("query", uri.query());
+	}
+	@Test
+	public void testAppendQuery3(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = null;
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendQuery("query");
+		assertEquals("query", uri.query());
+	}
+	
+	//Test de trimQuery()
+	@Test
+	public void testTrimQuery1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = null;
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI new_uri = uri.trimQuery();
+		assertEquals(uri, new_uri);
+	}
+	@Test
+	public void testTrimQuery2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.trimQuery();
+		assertEquals("scheme://authority!/device:/foo/bar#fragment", uri.toString());
+	}
+		
+	//Test de fragment()
+	@Test
+	public void testFragment1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("fragment", uri.fragment());
+	}
+	@Test
+	public void testFragment2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = null;
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals(null, uri.fragment());
+	}
+	
+	//Test de appendFragment(String fragment)
+	@Test
+	public void testAppendFragment1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = null;
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendFragment("fragment");
+		assertEquals("fragment", uri.fragment());
+	}
+	@Test
+	public void testAppendFragment2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment1";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendFragment("fragment");
+		assertEquals("fragment", uri.fragment());
+	}
+	
+	//Test de trimFragment()
+	@Test
+	public void testTrimFragment1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = null;
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI new_uri = uri.trimFragment();
+		assertEquals(uri, new_uri);
+	}
+	@Test
+	public void testTrimFragment2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.trimFragment();
+		assertEquals("scheme://authority!/device:/foo/bar?query", uri.toString());
+	}
+	
+	//Test de resolve(String base)
+	
+	//Test de resolve(String base, boolean preserveRootParents)
+	
+	//Test de deresolve(String base)
+	
+	//Test de deresolve(String base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath)
+	
+	
+	//Test de toFileString
+	@Test
+	public void testToFileString1(){
+		String value = "/truc/bidule/machin";
+		URI uri1 = URI.createFileURI(value);
+		URI uri2 = URI.createFileURI(value+"3");
+		assertFalse(uri1.toFileString().equals(uri2.toFileString()));
+	}
+	@Test
+	public void testToFileString2(){
+		String value = "/truc/bidule/machin";
+		URI uri1 = URI.createFileURI(value);
+		URI uri2 = URI.createFileURI(value);
+		assertEquals(uri1.toFileString(), uri2.toFileString());
+	}
+	
+	//Test de toPlateformString()
+	@Test
+	public void testToPlateformString1(){
+		String value = "foo://truc/bidule/machin";
+		URI uri1 = URI.createURI(value);
+		URI uri2 = URI.createURI(value+"3");
+		assertFalse(uri1.toString().equals(uri2.toString()));
+	}
+	@Test
+	public void testToPlateformString2(){
+		String value = "foo://truc/bidule/machin";
+		URI uri1 = URI.createURI(value);
+		URI uri2 = URI.createURI(value);
+		assertEquals(uri1.toString(), uri2.toString());
+	}
+	
+	
+	//Test de appendSegment(String segment)
+	@Test(expected=IllegalArgumentException.class)
+	public void testAppendSegment1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendSegment("segment/");
+	}
+	@Test
+	public void testAppendSegment2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendSegment("segment");
+		String[] s = {"foo", "bar", "segment"};
+		assertArrayEquals(s, uri.segments());
+	}
+	
+	//Test de appendSegment(String segments)
+	@Test(expected=IllegalArgumentException.class)
+	public void testAppendSegments1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		String[] s = {"segment1", "segment2", "segment/"};
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendSegments(s);
+	}
+	@Test
+	public void testAppendSegments2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		String[] new_s = {"segment1", "segment2"};
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendSegments(new_s);
+		String[] s = {"foo", "bar", "segment1", "segment2"};
+		assertArrayEquals(s, uri.segments());
+	}
+	
+	//Test de trimSegments(int i)
+	@Test
+	public void testTrimSegments1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI new_uri = uri.trimSegments(2);
+		assertEquals(uri, new_uri);
+	}
+	@Test
+	public void testTrimSegments2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.trimSegments(3);
+		String[] s = {};
+		assertArrayEquals(s, uri.segments());
+	}
+	@Test
+	public void testTrimSegments3(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.trimSegments(1);
+		String[] s = {"foo"};
+		assertArrayEquals(s, uri.segments());
+	}
+	
+	//Test de hasTrailingPathSeparator()
+	
+	//Test de fileExtension()
+	@Test
+	public void testFileExtension1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals(null, uri.fileExtension());
+	}
+	@Test
+	public void testFileExtension2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar.txt"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("txt", uri.fileExtension());
+	}
+	
+	//Test de appendFileExtension(String fileExtension)
+	@Test
+	public void testAppendFileExtension1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar.txt"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendFileExtension("html");
+		assertEquals("html", uri.fileExtension());
+	}
+	@Test
+	public void testAppendFileExtension2(){
+		String scheme = "scheme";
+		String opaquePart = "opaque";
+		String fragment = "fragment";
+		URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
+		URI new_uri = uri.appendFileExtension("txt");
+		assertEquals(new_uri, uri);
+	}
+	@Test
+	public void testAppendFileExtension3(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		uri = uri.appendFileExtension("txt");
+		assertEquals("txt", uri.fileExtension());
+	}
+	
+	//Test de trimFileExtension()
+	@Test
+	public void testTrimFileExtension1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI new_uri = uri.trimFileExtension();
+		assertEquals(uri, new_uri);
+	}
+	@Test
+	public void testTrimFileExtension2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar.txt"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		String new_scheme = "scheme";
+		String new_authority = "authority!";
+		String new_device = "device:";
+		String[] new_segments = {"foo","bar"};
+		String new_query = "query";
+		String new_fragment = "fragment";
+		URI new_uri = URI.createHierarchicalURI(new_scheme, new_authority, new_device, new_segments, new_query, new_fragment);
+		uri = uri.trimFileExtension();
+		assertEquals(new_uri, uri);
+	}
+	
+	//Test de isPrefix()
+	
+	//Test de replacePrefix(String oldPrefix, String newPrefix)
+	
+	//Test de 
 	
 	//Test de isRelative()
 	@Test
