@@ -508,6 +508,213 @@ public class TestURI {
 		assertEquals(uri.toString(), "platform:/plugin/plugin-id/ path");
 	}
 	
+	//Test de isRelative()
+		@Test
+		public void testIsRelative1(){
+			String value = "foo://truc/bidule/machin";
+			URI uri = URI.createURI(value);
+			assertFalse(uri.isRelative());
+		}
+		@Test
+		public void testIsRelative2(){
+			String value = "truc/bidule/machin";
+			URI uri = URI.createURI(value);
+			assertTrue(uri.isRelative());
+		}
+		
+		//Test de isHierarchical()
+		@Test
+		public void testIsHierachical1(){
+			String value = "truc:";
+			URI uri = URI.createURI(value);
+			assertFalse(uri.isHierarchical());
+		}
+		@Test
+		public void testIsHierachical2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
+			assertTrue(uri.isHierarchical());
+		}
+		
+		//Test de hasAuthority()
+		@Test
+		public void testHasAuthority1(){
+			String[] segments = {"s1","s2"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertFalse(uri.hasAuthority());
+		}
+		@Test
+		public void testHasAuthority2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
+			assertTrue(uri.hasAuthority());
+		}
+		
+		//Test de hasOpaquePart()
+		@Test
+		public void testHasOpaquePart1(){
+			String[] segments = {"s1","s2"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertFalse(uri.hasOpaquePart());
+		}
+		@Test
+		public void testHasOpaquePart2(){
+			String scheme = "scheme";
+			String opaquePart = "opaque";
+			String fragment = "fragment";
+			URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
+			assertTrue(uri.hasOpaquePart());
+		}
+		
+		//Test de hasDevice()
+		@Test
+		public void testHasDevice1(){
+			String[] segments = {"s1","s2"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertFalse(uri.hasDevice());
+		}
+		@Test
+		public void testHasDevice2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
+			assertTrue(uri.hasDevice());
+		}
+		
+		//Test de hasPath()
+		@Test
+		public void testHasPath1(){
+			String scheme = "scheme";
+			String opaquePart = "opaque";
+			String fragment = "fragment";
+			URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
+			assertFalse(uri.hasPath());
+		}
+		@Test
+		public void testHasPath2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String[] segments = {"foo","bar"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+			assertTrue(uri.hasPath());
+		}
+		
+		//Test de hasAbsolutePath()
+		@Test
+		public void testHasAbsolutePath1(){
+			String scheme = "scheme";
+			String opaquePart = "opaque";
+			String fragment = "fragment";
+			URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
+			assertFalse(uri.hasAbsolutePath());
+		}
+		@Test
+		public void testHasAbsolutePath2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String[] segments = {"foo","bar"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+			assertTrue(uri.hasAbsolutePath());
+		}
+		
+		//Test de hasRelativePath()
+		@Test
+		public void testHasRelativePath1(){
+			String scheme = "scheme";
+			String opaquePart = "opaque";
+			String fragment = "fragment";
+			URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
+			assertFalse(uri.hasRelativePath());
+		}
+		@Test
+		public void testHasRelativePath2(){
+			String[] segments = {"s1","s2"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertTrue(uri.hasRelativePath());
+		}
+		
+		//Test de hasEmptyPath()
+		@Test
+		public void testHasEmptyPath1(){
+			String[] segments = {"s1","s2"};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertFalse(uri.hasEmptyPath());
+		}
+		@Test
+		public void testHasEmptyPath2(){
+			String[] segments = {};
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertTrue(uri.hasEmptyPath());
+		}
+		
+		//Test de hasQuery()
+		@Test
+		public void testHasQuery1(){
+			String[] segments = {"s1","s2"};
+			String query = null;
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertFalse(uri.hasQuery());
+		}
+		@Test
+		public void testHasQuery2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
+			assertTrue(uri.hasQuery());
+		}
+		
+		//Test de hasFragment()
+		@Test
+		public void testHasFragment1(){
+			String[] segments = {"s1","s2"};
+			String query = "query";
+			String fragment = null;
+			URI uri = URI.createHierarchicalURI(segments, query, fragment);
+			assertFalse(uri.hasFragment());
+		}
+		@Test
+		public void testHasFragment2(){
+			String scheme = "scheme";
+			String authority = "authority";
+			String device = "device:";
+			String query = "query";
+			String fragment = "fragment";
+			URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
+			assertTrue(uri.hasFragment());
+		}
 	
 	//Test de isCurrentDocumentReference()
 	@Test
@@ -961,6 +1168,45 @@ public class TestURI {
 	}
 	
 	//Test de devicePath()
+	@Test
+	public void testDevicePath1(){
+		String value = "truc:";
+		URI uri = URI.createURI(value);
+		assertEquals(null, uri.devicePath());
+	}
+	@Test
+	public void testDevicePath2(){
+		String scheme = "jar";
+		String authority = "authority!";
+		String device = null;
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("authority!/foo/bar", uri.devicePath());
+	}
+	@Test
+	public void testDevicePath3(){
+		String scheme = "scheme";
+		String authority = null;
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("device:/foo/bar", uri.devicePath());
+	}
+	@Test
+	public void testDevicePath4(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("//authority!/device:/foo/bar", uri.devicePath());
+	}
 	
 	//Test de query()
 	@Test
@@ -1048,7 +1294,7 @@ public class TestURI {
 		uri = uri.trimQuery();
 		assertEquals("scheme://authority!/device:/foo/bar#fragment", uri.toString());
 	}
-		
+	
 	//Test de fragment()
 	@Test
 	public void testFragment1(){
@@ -1126,44 +1372,231 @@ public class TestURI {
 	}
 	
 	//Test de resolve(String base)
+	@Test(expected=IllegalArgumentException.class)
+	public void testResolveA1(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createHierarchicalURI(segments, query, fragment);//relative
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("", uri.resolve(base));
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testResolveA2(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createURI("here");//non-hierarchical
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("", uri.resolve(base));
+	}
+	@Test
+	public void testResolveA3(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals("scheme://authority!/device:/foo/foo/bar?query#fragment", uri.resolve(base).toString());
+	}
+	
 	
 	//Test de resolve(String base, boolean preserveRootParents)
+	@Test(expected=IllegalArgumentException.class)
+	public void testResolveB1(){
+		boolean preserve = true;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createHierarchicalURI(segments, query, fragment);//relative
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("", uri.resolve(base,preserve));
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testResolveB2(){
+		boolean preserve = true;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createURI("here");//non-hierarchical
+		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertEquals("", uri.resolve(base,preserve));
+	}
+	@Test
+	public void testResolveB3(){
+		boolean preserve = true;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals("scheme://authority!/device:/foo/foo/bar?query#fragment", uri.resolve(base, preserve).toString());
+	}
+	@Test
+	public void testResolveB4(){
+		boolean preserve = false;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals("scheme://authority!/device:/foo/foo/bar?query#fragment", uri.resolve(base, preserve).toString());
+	}
 	
 	//Test de deresolve(String base)
+	@Test
+	public void testDeresolveA1(){
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createURI("here");//non-hierarchical
+		assertEquals(uri.toString(), uri.deresolve(base).toString());
+	}
+	@Test
+	public void testDeresolveA2(){
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createHierarchicalURI(segments, query, fragment);//relative
+		assertEquals(uri.toString(), uri.deresolve(base).toString());
+	}
+	@Test
+	public void testDeresolveA3(){
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI exp_uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals(exp_uri.toString(), uri.deresolve(base).toString());
+	}
 	
 	//Test de deresolve(String base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath)
-	
+	@Test
+	public void testDeresolveB1(){
+		boolean preserve = true;
+		boolean anyRel = true;
+		boolean shorterRel = true;
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createURI("here");//non-hierarchical
+		assertEquals(uri.toString(), uri.deresolve(base, preserve, anyRel, shorterRel).toString());
+	}
+	@Test
+	public void testDeresolveB2(){
+		boolean preserve = true;
+		boolean anyRel = true;
+		boolean shorterRel = true;
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createHierarchicalURI(segments, query, fragment);//relative
+		assertEquals(uri.toString(), uri.deresolve(base, preserve, anyRel, shorterRel).toString());
+	}
+	@Test
+	public void testDeresolveB3(){
+		boolean preserve = true;
+		boolean anyRel = true;
+		boolean shorterRel = false;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertTrue(uri.deresolve(base, preserve, anyRel, shorterRel).hasRelativePath());
+	}
+	@Test
+	public void testDeresolveB4(){
+		boolean preserve = true;
+		boolean anyRel = false;
+		boolean shorterRel = false;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		assertTrue(uri.deresolve(base, preserve, anyRel, shorterRel).hasAbsolutePath());
+	}
+	@Test
+	public void testDeresolveB5(){
+		boolean preserve = true;
+		boolean anyRel = false;
+		boolean shorterRel = true;
+		String scheme = "scheme";
+		String authority = "authority!";
+		String device = "device:";
+		String[] segments = {"foo","bar"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createURI("scheme://authority!/device:/foo/foo/bar?query#fragment");
+		URI base = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
+		URI exp_uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals(exp_uri.toString(), uri.deresolve(base, preserve, anyRel, shorterRel).toString());
+	}
 	
 	//Test de toFileString
 	@Test
 	public void testToFileString1(){
-		String value = "/truc/bidule/machin";
-		URI uri1 = URI.createFileURI(value);
-		URI uri2 = URI.createFileURI(value+"3");
-		assertFalse(uri1.toFileString().equals(uri2.toFileString()));
+		String[] segments = {"s1","s2"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals(null, uri.toFileString());
 	}
 	@Test
 	public void testToFileString2(){
+		String[] segments = {"s1","s2"};
+		String query = null;
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertEquals("s1/s2", uri.toFileString());
+	}
+	@Test
+	public void testToFileString3(){
+
 		String value = "/truc/bidule/machin";
-		URI uri1 = URI.createFileURI(value);
-		URI uri2 = URI.createFileURI(value);
-		assertEquals(uri1.toFileString(), uri2.toFileString());
+		URI uri = URI.createFileURI(value);
+		System.out.println(uri.toFileString());
+		assertEquals(uri.toString(), uri.toFileString());
 	}
 	
 	//Test de toPlateformString()
 	@Test
 	public void testToPlateformString1(){
-		String value = "foo://truc/bidule/machin";
-		URI uri1 = URI.createURI(value);
-		URI uri2 = URI.createURI(value+"3");
-		assertFalse(uri1.toString().equals(uri2.toString()));
+		
 	}
 	@Test
 	public void testToPlateformString2(){
-		String value = "foo://truc/bidule/machin";
-		URI uri1 = URI.createURI(value);
-		URI uri2 = URI.createURI(value);
-		assertEquals(uri1.toString(), uri2.toString());
+		
 	}
 	
 	
@@ -1262,6 +1695,22 @@ public class TestURI {
 	}
 	
 	//Test de hasTrailingPathSeparator()
+	@Test
+	public void testHasTrailingPathSeparator1(){
+		String[] segments = {"s1","s2"};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertFalse(uri.hasTrailingPathSeparator());
+	}
+	@Test
+	public void testHasTrailingPathSeparator2(){
+		String[] segments = {"s1","s2",""};
+		String query = "query";
+		String fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertTrue(uri.hasTrailingPathSeparator());
+	}
 	
 	//Test de fileExtension()
 	@Test
@@ -1356,218 +1805,250 @@ public class TestURI {
 	}
 	
 	//Test de isPrefix()
-	
-	//Test de replacePrefix(String oldPrefix, String newPrefix)
-	
-	//Test de 
-	
-	//Test de isRelative()
 	@Test
-	public void testIsRelative1(){
-		String value = "foo://truc/bidule/machin";
-		URI uri = URI.createURI(value);
-		assertFalse(uri.isRelative());
-	}
-	@Test
-	public void testIsRelative2(){
-		String value = "truc/bidule/machin";
-		URI uri = URI.createURI(value);
-		assertTrue(uri.isRelative());
-	}
-	
-	//Test de isHierarchical()
-	@Test
-	public void testIsHierachical1(){
-		String value = "truc:";
-		URI uri = URI.createURI(value);
-		assertFalse(uri.isHierarchical());
-	}
-	@Test
-	public void testIsHierachical2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
-		assertTrue(uri.isHierarchical());
-	}
-	
-	//Test de hasAuthority()
-	@Test
-	public void testHasAuthority1(){
-		String[] segments = {"s1","s2"};
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertFalse(uri.hasAuthority());
-	}
-	@Test
-	public void testHasAuthority2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
-		assertTrue(uri.hasAuthority());
-	}
-	
-	//Test de hasOpaquePart()
-	@Test
-	public void testHasOpaquePart1(){
-		String[] segments = {"s1","s2"};
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertFalse(uri.hasOpaquePart());
-	}
-	@Test
-	public void testHasOpaquePart2(){
-		String scheme = "scheme";
-		String opaquePart = "opaque";
-		String fragment = "fragment";
-		URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
-		assertTrue(uri.hasOpaquePart());
-	}
-	
-	//Test de hasDevice()
-	@Test
-	public void testHasDevice1(){
-		String[] segments = {"s1","s2"};
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertFalse(uri.hasDevice());
-	}
-	@Test
-	public void testHasDevice2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
-		assertTrue(uri.hasDevice());
-	}
-	
-	//Test de hasPath()
-	@Test
-	public void testHasPath1(){
-		String scheme = "scheme";
-		String opaquePart = "opaque";
-		String fragment = "fragment";
-		URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
-		assertFalse(uri.hasPath());
-	}
-	@Test
-	public void testHasPath2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
+	public void testIsPrefix1(){
 		String[] segments = {"foo","bar"};
 		String query = "query";
 		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
-		assertTrue(uri.hasPath());
-	}
-	
-	//Test de hasAbsolutePath()
-	@Test
-	public void testHasAbsolutePath1(){
-		String scheme = "scheme";
-		String opaquePart = "opaque";
-		String fragment = "fragment";
-		URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
-		assertFalse(uri.hasAbsolutePath());
-	}
-	@Test
-	public void testHasAbsolutePath2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
-		String[] segments = {"foo","bar"};
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, segments, query, fragment);
-		assertTrue(uri.hasAbsolutePath());
-	}
-	
-	//Test de hasRelativePath()
-	@Test
-	public void testHasRelativePath1(){
-		String scheme = "scheme";
-		String opaquePart = "opaque";
-		String fragment = "fragment";
-		URI uri = URI.createGenericURI(scheme, opaquePart, fragment);
-		assertFalse(uri.hasRelativePath());
-	}
-	@Test
-	public void testHasRelativePath2(){
-		String[] segments = {"s1","s2"};
-		String query = "query";
-		String fragment = "fragment";
 		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertTrue(uri.hasRelativePath());
-	}
-	
-	//Test de hasEmptyPath()
-	@Test
-	public void testHasEmptyPath1(){
-		String[] segments = {"s1","s2"};
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertFalse(uri.hasEmptyPath());
+		assertFalse(uri.isPrefix());
 	}
 	@Test
-	public void testHasEmptyPath2(){
-		String[] segments = {};
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertTrue(uri.hasEmptyPath());
-	}
-	
-	//Test de hasQuery()
-	@Test
-	public void testHasQuery1(){
-		String[] segments = {"s1","s2"};
+	public void testIsPrefix2(){
+		String[] segments = {"foo","bar",""};
 		String query = null;
 		String fragment = "fragment";
 		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertFalse(uri.hasQuery());
+		assertFalse(uri.isPrefix());
 	}
 	@Test
-	public void testHasQuery2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
-		assertTrue(uri.hasQuery());
-	}
-	
-	//Test de hasFragment()
-	@Test
-	public void testHasFragment1(){
-		String[] segments = {"s1","s2"};
+	public void testIsPrefix3(){
+		String[] segments = {"foo","bar",""};
 		String query = "query";
 		String fragment = null;
 		URI uri = URI.createHierarchicalURI(segments, query, fragment);
-		assertFalse(uri.hasFragment());
+		assertFalse(uri.isPrefix());
 	}
 	@Test
-	public void testHasFragment2(){
-		String scheme = "scheme";
-		String authority = "authority";
-		String device = "device:";
-		String query = "query";
-		String fragment = "fragment";
-		URI uri = URI.createHierarchicalURI(scheme, authority, device, query, fragment);
-		assertTrue(uri.hasFragment());
+	public void testIsPrefix4(){
+		String[] segments = {"foo","bar",""};
+		String query = null;
+		String fragment = null;
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		assertTrue(uri.isPrefix());
 	}
 	
+	//Test de replacePrefix(String oldPrefix, String newPrefix)
+	@Test(expected=IllegalArgumentException.class)
+	public void testReplacePrefix1(){
+		String[] segments = {"foo","bar",""};
+		String[] new_segments = {"bar","bar",""};
+		String query = "query";
+		String fragment = "fragment";
+		String old_query = "query";
+		String old_fragment = null;
+		String new_query = null;
+		String new_fragment = null;
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		URI old_prefix = URI.createHierarchicalURI(segments, old_query, old_fragment);
+		URI new_prefix = URI.createHierarchicalURI(new_segments, new_query, new_fragment);
+		uri.replacePrefix(old_prefix, new_prefix);
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testReplacePrefix2(){
+		String[] segments = {"foo","bar",""};
+		String[] new_segments = {"bar","bar",""};
+		String query = "query";
+		String fragment = "fragment";
+		String old_query = null;
+		String old_fragment = null;
+		String new_query = null;
+		String new_fragment = "fragment";
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		URI old_prefix = URI.createHierarchicalURI(segments, old_query, old_fragment);
+		URI new_prefix = URI.createHierarchicalURI(new_segments, new_query, new_fragment);
+		uri.replacePrefix(old_prefix, new_prefix);
+	}
+	@Test
+	public void testReplacePrefix3(){
+		String[] segments = {"foo","bar",""};
+		String[] new_segments = {"bar","bar",""};
+		String query = "query";
+		String fragment = "fragment";
+		String old_query = null;
+		String old_fragment = null;
+		String new_query = null;
+		String new_fragment = null;
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		URI old_prefix = URI.createHierarchicalURI(new_segments, old_query, old_fragment);
+		URI new_prefix = URI.createHierarchicalURI(new_segments, new_query, new_fragment);
+		
+		assertEquals(null, uri.replacePrefix(old_prefix, new_prefix));
+	}
+	@Test
+	public void testReplacePrefix4(){
+		String[] segments = {"foo","bar",""};
+		String[] new_segments = {"bar","bar",""};
+		String query = "query";
+		String fragment = "fragment";
+		String old_query = null;
+		String old_fragment = null;
+		String new_query = null;
+		String new_fragment = null;
+		URI uri = URI.createHierarchicalURI(segments, query, fragment);
+		URI old_prefix = URI.createHierarchicalURI(segments, old_query, old_fragment);
+		URI new_prefix = URI.createHierarchicalURI(new_segments, new_query, new_fragment);
+		
+		assertEquals("bar/bar/#fragment", uri.replacePrefix(old_prefix, new_prefix).toString());
+	}
+	
+	//Test de encodeOpaquePart(String value, boolean ignoreEscaped)
+	@Test
+	public void testEncodeOpaquePart1(){
+		String value = "truc#";
+		boolean ignore = true;
+		assertEquals("truc%23",URI.encodeOpaquePart(value, ignore));
+	}
+	@Test
+	public void testEncodeOpaquePart2(){
+		String value = "truc?";
+		boolean ignore = true;
+		assertEquals("truc?",URI.encodeOpaquePart(value, ignore));
+	}
+	@Test
+	public void testEncodeOpaquePart3(){
+		String value = "truc%25#";
+		boolean ignore = true;
+		assertEquals("truc%25%23",URI.encodeOpaquePart(value, ignore));
+	}
+	@Test
+	public void testEncodeOpaquePart4(){
+		String value = "truc%25#";
+		boolean ignore = false;
+		assertEquals("truc%2525%23",URI.encodeOpaquePart(value, ignore));
+	}
+		
+	//Test de encodeAuthority(String value, boolean ignoreEscaped)
+	@Test
+	public void testEncodeAuthority1(){
+		String value = "truc#";
+		boolean ignore = true;
+		assertEquals("truc%23",URI.encodeAuthority(value, ignore));
+	}
+	@Test
+	public void testEncodeAuthority2(){
+		String value = "truc!";
+		boolean ignore = true;
+		assertEquals("truc!",URI.encodeAuthority(value, ignore));
+	}
+	@Test
+	public void testEncodeAuthority3(){
+		String value = "truc%25#";
+		boolean ignore = true;
+		assertEquals("truc%25%23",URI.encodeAuthority(value, ignore));
+	}
+	@Test
+	public void testEncodeAuthority4(){
+		String value = "truc%25#";
+		boolean ignore = false;
+		assertEquals("truc%2525%23",URI.encodeAuthority(value, ignore));
+	}
+	
+	//Test de encodeSegment(String value, boolean ignoreEscaped)
+	@Test
+	public void testEncodeSegment1(){
+		String value = "truc#";
+		boolean ignore = true;
+		assertEquals("truc%23",URI.encodeSegment(value, ignore));
+	}
+	@Test
+	public void testEncodeSegment2(){
+		String value = "truc!";
+		boolean ignore = true;
+		assertEquals("truc!",URI.encodeSegment(value, ignore));
+	}
+	@Test
+	public void testEncodeSegment3(){
+		String value = "truc%25#";
+		boolean ignore = true;
+		assertEquals("truc%25%23",URI.encodeSegment(value, ignore));
+	}
+	@Test
+	public void testEncodeSegment4(){
+		String value = "truc%25#";
+		boolean ignore = false;
+		assertEquals("truc%2525%23",URI.encodeSegment(value, ignore));
+	}
+	
+	//Test de encodeQuery(String value, boolean ignoreEscaped)
+	@Test
+	public void testEncodeQuery1(){
+		String value = "truc#";
+		boolean ignore = true;
+		assertEquals("truc%23",URI.encodeQuery(value, ignore));
+	}
+	@Test
+	public void testEncodeQuery2(){
+		String value = "truc!";
+		boolean ignore = true;
+		assertEquals("truc!",URI.encodeQuery(value, ignore));
+	}
+	@Test
+	public void testEncodeQuery3(){
+		String value = "truc%25#";
+		boolean ignore = true;
+		assertEquals("truc%25%23",URI.encodeQuery(value, ignore));
+	}
+	@Test
+	public void testEncodeQuery4(){
+		String value = "truc%25#";
+		boolean ignore = false;
+		assertEquals("truc%2525%23",URI.encodeQuery(value, ignore));
+	}
+	
+	//Test de encodeFragment(String value, boolean ignoreEscaped)
+	@Test
+	public void testEncodeFragment1(){
+		String value = "truc#";
+		boolean ignore = true;
+		assertEquals("truc%23",URI.encodeFragment(value, ignore));
+	}
+	@Test
+	public void testEncodeFragment2(){
+		String value = "truc!";
+		boolean ignore = true;
+		assertEquals("truc!",URI.encodeFragment(value, ignore));
+	}
+	@Test
+	public void testEncodeFragment3(){
+		String value = "truc%25#";
+		boolean ignore = true;
+		assertEquals("truc%25%23",URI.encodeFragment(value, ignore));
+	}
+	@Test
+	public void testEncodeFragment4(){
+		String value = "truc%25#";
+		boolean ignore = false;
+		assertEquals("truc%2525%23",URI.encodeFragment(value, ignore));
+	}
+	
+	//Test de decode(String value)
+	@Test
+	public void testDecode1(){
+		String value="truc%25%23";
+		assertEquals("truc%#",URI.decode(value));
+	}
+	@Test
+	public void testDecode2(){
+		String value="truc!";
+		assertEquals("truc!",URI.decode(value));
+	}
+	@Test
+	public void testDecode3(){
+		String value="truc%2";
+		assertEquals("truc%2",URI.decode(value));
+	}
+	
+	
+	
 }
-
