@@ -1580,23 +1580,28 @@ public class TestURI {
 		URI uri = URI.createHierarchicalURI(segments, query, fragment);
 		assertEquals("s1/s2", uri.toFileString());
 	}
-	@Test
-	public void testToFileString3(){
-
-		String value = "/truc/bidule/machin";
-		URI uri = URI.createFileURI(value);
-		System.out.println(uri.toFileString());
-		assertEquals(uri.toString(), uri.toFileString());
-	}
 	
 	//Test de toPlateformString()
 	@Test
 	public void testToPlateformString1(){
-		
+		String pathName = "platform:/project-name";
+		boolean decode = true;
+		URI uri = URI.createURI(pathName);
+		assertEquals(null,uri.toPlatformString(decode));
 	}
 	@Test
 	public void testToPlateformString2(){
-		
+		String pathName = "platform:/project-name/path%23";
+		boolean decode = true;
+		URI uri = URI.createURI(pathName);
+		assertEquals("/path#",uri.toPlatformString(decode));
+	}
+	@Test
+	public void testToPlateformString3(){
+		String pathName = "platform:/project-name/path%23";
+		boolean decode = false;
+		URI uri = URI.createURI(pathName);
+		assertEquals("/path%23",uri.toPlatformString(decode));
 	}
 	
 	
