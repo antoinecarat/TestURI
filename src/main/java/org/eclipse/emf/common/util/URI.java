@@ -1239,6 +1239,11 @@ public abstract class URI {
 		return hashCode;
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		return other == this;
+	}
+
 	// Tests whether this URI's path segment array is equal to that of the given
 	// uri.
 	protected boolean segmentsEqual(URI uri) {
@@ -1456,7 +1461,7 @@ public abstract class URI {
 						URI_Const.POOL.externalQueue, fragment);
 				return result;
 			} else {
-				int hashCode = ((this.hashCode * 31) + URI_Const.FRAGMENT_SEPARATOR)
+				int hashCode = (this.hashCode * 31 + URI_Const.FRAGMENT_SEPARATOR)
 						* CommonUtil.powerOf31(fragment.length())
 						+ fragment.hashCode();
 				return new Fragment(hashCode, this,
@@ -1472,7 +1477,7 @@ public abstract class URI {
 		if (fragment == null) {
 			return this;
 		} else {
-			int hashCode = ((this.hashCode * 31) + URI_Const.FRAGMENT_SEPARATOR)
+			int hashCode = (this.hashCode * 31 + URI_Const.FRAGMENT_SEPARATOR)
 					* CommonUtil.powerOf31(fragment.length())
 					+ fragment.hashCode();
 			return new Fragment(hashCode, this, fragment);
@@ -2035,9 +2040,10 @@ public abstract class URI {
 								break;
 							}
 							case 4: {
-								result.appendCodePoint(((bytes[0] & 0x7) << 18
+								result.appendCodePoint((bytes[0] & 0x7) << 18
 										| (bytes[1] & 0X3F) << 12
-										| (bytes[2] & 0X3F) << 6 | bytes[3] & 0x3F));
+										| (bytes[2] & 0X3F) << 6 | bytes[3]
+										& 0x3F);
 								break;
 							}
 							}
@@ -4078,10 +4084,10 @@ public abstract class URI {
 		public void clear() {
 			Fragment uri = get();
 			if (uri != null) {
-				uri.fragment = splitInternFragment(fragment);
-				uri.hashCode = ((uri.uri.hashCode * 31) + URI_Const.FRAGMENT_SEPARATOR)
+				uri.setFragment(splitInternFragment(fragment));
+				uri.hashCode = (uri.uri.hashCode * 31 + URI_Const.FRAGMENT_SEPARATOR)
 						* CommonUtil.powerOf31(fragment.length())
-						+ uri.fragment.hashCode();
+						+ uri.getFragment().hashCode();
 			}
 		}
 	}

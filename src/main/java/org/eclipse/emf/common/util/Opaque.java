@@ -137,13 +137,11 @@ final class Opaque extends URI {
 	protected boolean matches(int validate, boolean hierarchical,
 			String scheme, String authority, String device,
 			boolean absolutePath, String[] segments, String query) {
-		return !hierarchical
-				&& !absolutePath
-				&& segments == null
+		return !hierarchical && !absolutePath && segments == null
 				&& query == null
-				&& (validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE ? this.scheme == scheme
-						&& this.opaquePart == authority
-						: equals(this.scheme, scheme)
-								&& equals(this.opaquePart, authority));
+				&& validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE ? this.scheme == scheme
+				&& this.opaquePart == authority
+				: equals(this.scheme, scheme)
+						&& equals(this.opaquePart, authority);
 	}
 }

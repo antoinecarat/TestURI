@@ -12,7 +12,7 @@ final class Fragment extends URI {
 	 * The representation of the fragment. The fragment is
 	 * {@link #splitInternFragment(String) split interned}.
 	 */
-	protected CharSequence fragment;
+	private CharSequence fragment;
 
 	/**
 	 * Creates an instance from the components. Assertions are used to validate
@@ -300,7 +300,7 @@ final class Fragment extends URI {
 		// could really be 0...
 		//
 		if (hashCode == 0) {
-			hashCode = ((uri.hashCode * 31) + URI_Const.FRAGMENT_SEPARATOR)
+			hashCode = (uri.hashCode * 31 + URI_Const.FRAGMENT_SEPARATOR)
 					* CommonUtil.powerOf31(fragment.length())
 					+ fragment.hashCode();
 
@@ -389,5 +389,13 @@ final class Fragment extends URI {
 		URI result = uri.replacePrefix(oldPrefix, newPrefix);
 		return result == uri ? this : result == null ? null
 				: appendFragment(result);
+	}
+
+	public Object getFragment() {
+		return fragment;
+	}
+
+	public void setFragment(CharSequence fragment) {
+		this.fragment = fragment;
 	}
 }

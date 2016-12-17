@@ -708,10 +708,12 @@ final class Hierarchical extends URI {
 		String[] segments = this.segments;
 		for (int i = 0, len = segments.length; i < len; i++) {
 			String segment = segments[i];
-			if ((i < len - 1 && URI_Const.SEGMENT_EMPTY == segment)
+			if (i < len - 1
+					&& URI_Const.SEGMENT_EMPTY == segment
 					|| URI_Const.SEGMENT_SELF == segment
 					|| URI_Const.SEGMENT_PARENT == segment
-					&& (!preserveRootParents || (i != 0 && URI_Const.SEGMENT_PARENT != segments[i - 1]))) {
+					&& (!preserveRootParents || i != 0
+							&& URI_Const.SEGMENT_PARENT != segments[i - 1])) {
 				return true;
 			}
 		}
@@ -978,17 +980,16 @@ final class Hierarchical extends URI {
 	protected boolean matches(int validate, boolean hierarchical,
 			String scheme, String authority, String device,
 			boolean absolutePath, String[] segments, String query) {
-		return hierarchical
-				&& hasAbsolutePath() == absolutePath
-				&& (validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE ? this.segments == segments
-						&& this.scheme == scheme
-						&& this.authority == authority
-						&& this.device == device && this.query == query
-						: Arrays.equals(this.segments, segments)
-								&& equals(this.scheme, scheme)
-								&& equals(this.authority, authority)
-								&& equals(this.device, device)
-								&& equals(this.query, query));
+		return hierarchical && hasAbsolutePath() == absolutePath
+				&& validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE ? this.segments == segments
+				&& this.scheme == scheme
+				&& this.authority == authority
+				&& this.device == device && this.query == query
+				: Arrays.equals(this.segments, segments)
+						&& equals(this.scheme, scheme)
+						&& equals(this.authority, authority)
+						&& equals(this.device, device)
+						&& equals(this.query, query);
 	}
 
 	@Override
