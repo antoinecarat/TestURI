@@ -68,7 +68,6 @@ public class URI_Const {
 	// iff the ASCII character with value N is included in the set. These are
 	// created with the highBitmask() and lowBitmask() methods defined below,
 	// and a character is tested against them using matches().
-	//
 	protected static final long ALPHA_HI = URI.highBitmask('a', 'z')
 			| URI.highBitmask('A', 'Z');
 	protected static final long ALPHA_LO = URI.lowBitmask('a', 'z')
@@ -96,7 +95,6 @@ public class URI_Const {
 	// Additional useful character classes, including characters valid in
 	// certain
 	// URI components and separators used in parsing them out of a string.
-	//
 	protected static final long SEGMENT_CHAR_HI = UNRESERVED_HI
 			| URI.highBitmask(";:@&=+$,"); // | ucschar | escaped
 	protected static final long SEGMENT_CHAR_LO = UNRESERVED_LO
@@ -119,7 +117,6 @@ public class URI_Const {
 	// However, that caused problems for people and we had to go back to not
 	// encoding and introduce yet another factory method that explicitly enables
 	// encoding.
-	//
 	protected static final boolean ENCODE_PLATFORM_RESOURCE_URIS = System
 			.getProperty("URI.encodePlatformResourceURIs") != null
 			&& !"false".equalsIgnoreCase(System
@@ -151,4 +148,6 @@ public class URI_Const {
 	 * @see #createURI(String, boolean, int)
 	 */
 	public static final int FRAGMENT_LAST_SEPARATOR = 2;
+	
+	public static final int const31 = 31; 
 }

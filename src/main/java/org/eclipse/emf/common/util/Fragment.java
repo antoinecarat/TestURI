@@ -27,13 +27,11 @@ final class Fragment extends URI {
 		this.fragment = fragment;
 
 		// There must be a fragment.
-		//
 		assert fragment != null;
 
 		// The hash code must be the same as that of the string
 		// representation,
 		// unless it's deferred.
-		//
 		assert hashCode == 0 || hashCode == toString().hashCode();
 	}
 
@@ -226,7 +224,6 @@ final class Fragment extends URI {
 		// If the hash code is 0 then it's highly likely we've deferred
 		// split interning the fragment, so don't use rawAppendFragment in
 		// that case.
-		//
 		return hashCode == 0 ? uri.appendFragment(fragment.toString()) : uri
 				.rawAppendFragment(fragment);
 	}
@@ -298,16 +295,14 @@ final class Fragment extends URI {
 		// Check if we have a deferred hash code initialization pending...
 		// Note there is the very remote possibility that the hash code
 		// could really be 0...
-		//
 		if (hashCode == 0) {
-			hashCode = (uri.hashCode * 31 + URI_Const.FRAGMENT_SEPARATOR)
+			hashCode = (uri.hashCode * URI_Const.const31 + URI_Const.FRAGMENT_SEPARATOR)
 					* CommonUtil.powerOf31(fragment.length())
 					+ fragment.hashCode();
 
 			// In that case, also split intern the fragment, but check if
 			// it's really a string, because otherwise it really must be
 			// split interned already.
-			//
 			if (fragment instanceof String) {
 				fragment = splitInternFragment(fragment.toString());
 			}
@@ -327,7 +322,6 @@ final class Fragment extends URI {
 
 		// Be careful to accommodate the case of a deferred split interned
 		// fragment.
-		//
 		Fragment that = (Fragment) object;
 		return uri == that.uri
 				&& (fragment == that.fragment || fragment.toString().equals(

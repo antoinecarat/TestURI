@@ -175,34 +175,27 @@ final class Hierarchical extends URI {
 		this.query = query;
 
 		// The segments array must be interned.
-		//
 		assert segments == SegmentSequence.STRING_ARRAY_POOL.intern(true, true,
 				segments, segments.length);
 
 		// The scheme must be interned and must be lower cased.
-		//
 		assert scheme == CommonUtil.internToLowerCase(scheme);
 
 		// The authority must be interned.
-		//
 		assert authority == CommonUtil.intern(authority);
 
 		// The query must be interned.
-		//
 		assert query == CommonUtil.intern(query);
 
 		// The device must be interned.
-		//
 		assert device == CommonUtil.intern(device);
 
 		// The components must be valid.
-		//
 		assert validateURI(true, scheme, authority, device, hasAbsolutePath(),
 				segments, query, null);
 
 		// The hash code must be the same as that of the string
 		// representation
-		//
 		assert hashCode == toString().hashCode();
 	}
 
@@ -497,7 +490,6 @@ final class Hierarchical extends URI {
 
 		// note: it's okay for two URIs to share a segments array, since
 		// neither will ever modify it
-
 		if (authority == null) {
 			// no authority: use base's
 			newAuthority = base.authority();
@@ -537,7 +529,6 @@ final class Hierarchical extends URI {
 	// Merges this URI's relative path with the base non-relative path.
 	// If base has no path, treat it as the root absolute path, unless this
 	// has no path either.
-	//
 	protected String[] mergePath(URI base, boolean preserveRootParents) {
 		if (base.hasRelativePath()) {
 			throw new IllegalArgumentException("merge against relative path");
@@ -554,7 +545,6 @@ final class Hierarchical extends URI {
 		// use a stack to accumulate segments of base, except for the last
 		// (i.e. skip trailing separator and anything following it), and of
 		// relative path
-		//
 		for (int i = 0; i < baseSegmentCount - 1; i++) {
 			sp = accumulate(stack, sp, base.segment(i), preserveRootParents);
 		}
@@ -643,9 +633,7 @@ final class Hierarchical extends URI {
 				if (hasPath || !baseHasPath) {
 					// matching devices and no path removal
 					newDevice = null;
-
 					// exception if (!hasPath() && base.hasPath())
-
 					if (!anyRelPath && !shorterRelPath) {
 						// user rejects a relative path: keep absolute or no
 						// path
@@ -696,8 +684,7 @@ final class Hierarchical extends URI {
 	// true, collapsible segments include any empty segments, except for the
 	// last segment, as well as and parent and self references. If
 	// preserveRootsParents is false, parent references are not collapsible
-	// if
-	// they are the first segment or preceded only by other parent
+	// if they are the first segment or preceded only by other parent
 	// references.
 	protected boolean hasCollapsableSegments(boolean preserveRootParents) {
 		if (hasRelativePath()) {
@@ -721,8 +708,7 @@ final class Hierarchical extends URI {
 	}
 
 	// Returns the shortest relative path between the the non-relative path
-	// of
-	// the given base and this absolute path. If the base has no path, it is
+	// of the given base and this absolute path. If the base has no path, it is
 	// treated as the root absolute path.
 	protected String[] findRelativePath(URI base, boolean preserveRootParents) {
 		if (base.hasRelativePath()) {
@@ -747,17 +733,15 @@ final class Hierarchical extends URI {
 		int diff = 0;
 
 		// if endPath is shorter than startPath, the last segment of endPath
-		// may
-		// not be compared: because startPath has been collapsed and had its
+		// may not be compared: because startPath has been collapsed and had its
 		// last segment removed, all preceding segments can be considered
-		// non-
-		// empty and followed by a separator, while the last segment of
-		// endPath
-		// will either be non-empty and not followed by a separator, or just
-		// empty
-		for (int count = startCount < endCount ? startCount : endCount - 1; diff < count
-				&& startPath[diff] == endPath[diff]; diff++) {
-			// Empty statement.
+		// non- empty and followed by a separator, while the last segment of
+		// endPath will either be non-empty and not followed by a separator, or
+		// just empty
+
+		int count = startCount < endCount ? startCount : endCount - 1;
+		while (diff < count && startPath[diff] == endPath[diff]) {
+			diff++;
 		}
 
 		int upCount = startCount - diff;
@@ -805,8 +789,7 @@ final class Hierarchical extends URI {
 			sp = accumulate(stack, sp, segments[i], preserveRootParents);
 		}
 
-		// if the path is non-empty and originally ended in an empty
-		// segment, a
+		// if the path is non-empty and originally ended in an empty segment, a
 		// parent reference, or a self reference, add a trailing separator
 		if (sp > 0) {
 			String segment = segments[segmentCount - 1];
@@ -980,16 +963,21 @@ final class Hierarchical extends URI {
 	protected boolean matches(int validate, boolean hierarchical,
 			String scheme, String authority, String device,
 			boolean absolutePath, String[] segments, String query) {
-		return hierarchical && hasAbsolutePath() == absolutePath
-				&& validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE ? this.segments == segments
-				&& this.scheme == scheme
-				&& this.authority == authority
-				&& this.device == device && this.query == query
-				: Arrays.equals(this.segments, segments)
-						&& equals(this.scheme, scheme)
-						&& equals(this.authority, authority)
-						&& equals(this.device, device)
-						&& equals(this.query, query);
+
+		boolean exp1 = hierarchical && hasAbsolutePath() == absolutePath;
+		boolean exp2;
+		if (validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE) {
+			exp2 = this.segments == segments && this.scheme == scheme
+					&& this.authority == authority && this.device == device
+					&& this.query == query;
+		} else {
+			exp2 = Arrays.equals(this.segments, segments)
+					&& equals(this.scheme, scheme)
+					&& equals(this.authority, authority)
+					&& equals(this.device, device) && equals(this.query, query);
+		}
+
+		return exp1 && exp2;
 	}
 
 	@Override
@@ -1068,7 +1056,6 @@ final class Hierarchical extends URI {
 	@Override
 	public URI appendSegment(String segment) {
 		// Do preliminary checking now but full checking later.
-		//
 		if (segment == null) {
 			throw new IllegalArgumentException("invalid segment: null");
 		}
@@ -1113,7 +1100,6 @@ final class Hierarchical extends URI {
 	@Override
 	public URI appendSegments(String[] segments) {
 		// Do preliminary checking now but full checking later.
-		//
 		if (segments == null) {
 			throw new IllegalArgumentException("invalid segments: null");
 		} else if (segments.length == 1) {
@@ -1250,10 +1236,8 @@ final class Hierarchical extends URI {
 			throw new IllegalArgumentException("non-prefix " + which + " value");
 		}
 
-		// Don't even consider it unless this is hierarchical and has
-		// scheme,
-		// authority, device and path absoluteness equal to those of the
-		// prefix.
+		// Don't even consider it unless this is hierarchical and has scheme,
+		// authority, device and path absoluteness equal to those of the prefix.
 		if (scheme != oldPrefix.scheme() || authority != oldPrefix.authority()
 				|| device != oldPrefix.device()
 				|| hasAbsolutePath() != oldPrefix.hasAbsolutePath()) {
@@ -1264,8 +1248,7 @@ final class Hierarchical extends URI {
 		int segmentsLength = segments.length;
 
 		// If the prefix has no segments, then it is the root absolute path,
-		// and
-		// we know this is an absolute path, too.
+		// and we know this is an absolute path, too.
 		// Get what's left of the segments after trimming the prefix.
 		String[] oldPrefixSegments = oldPrefix.rawSegments();
 		int oldPrefixSegmentCount = oldPrefixSegments.length;
@@ -1274,10 +1257,8 @@ final class Hierarchical extends URI {
 			tailSegmentCount = segmentsLength;
 		} else {
 			// This must have no fewer segments than the prefix. Since the
-			// prefix
-			// is not the root absolute path, its last segment is empty; all
-			// others
-			// must match.
+			// prefix is not the root absolute path, its last segment is empty;
+			// all others must match.
 			int i = 0;
 			int segmentsToCompare = oldPrefixSegmentCount - 1;
 			if (segmentsLength <= segmentsToCompare)
@@ -1288,8 +1269,7 @@ final class Hierarchical extends URI {
 					return null;
 			}
 
-			// The prefix really is a prefix of this. If this has just one
-			// more,
+			// The prefix really is a prefix of this. If this has just one more,
 			// empty segment, the paths are the same.
 			if (i == segmentsLength - 1
 					&& segments[i] == URI_Const.SEGMENT_EMPTY) {
@@ -1301,8 +1281,7 @@ final class Hierarchical extends URI {
 
 		// If the new prefix has segments, it is not the root absolute path,
 		// and we need to drop the trailing empty segment and append the
-		// tail
-		// segments.
+		// tail segments.
 		String[] newPrefixSegments = newPrefix.rawSegments();
 		int newPrefixSegmentCount = newPrefixSegments.length;
 		String[] mergedSegments;

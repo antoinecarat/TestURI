@@ -30,21 +30,17 @@ final class Opaque extends URI {
 		this.opaquePart = opaquePart;
 
 		// The scheme must be interned and must be lower cased.
-		//
 		assert scheme == CommonUtil.internToLowerCase(scheme);
 
 		// The authority must be interned.
-		//
 		assert opaquePart == CommonUtil.intern(opaquePart);
 
 		// The components must be valid.
-		//
 		assert validateURI(false, scheme, opaquePart, null, false,
 				URI_Const.NO_SEGMENTS, null, null);
 
 		// The hash code must be the same as that of the string
 		// representation
-		//
 		assert hashCode == toString().hashCode();
 	}
 
@@ -137,11 +133,17 @@ final class Opaque extends URI {
 	protected boolean matches(int validate, boolean hierarchical,
 			String scheme, String authority, String device,
 			boolean absolutePath, String[] segments, String query) {
-		return !hierarchical && !absolutePath && segments == null
-				&& query == null
-				&& validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE ? this.scheme == scheme
-				&& this.opaquePart == authority
-				: equals(this.scheme, scheme)
-						&& equals(this.opaquePart, authority);
+
+		boolean exp1 = !hierarchical && !absolutePath && segments == null
+				&& query == null;
+		boolean exp2;
+		if (validate >= URIPool.URIComponentsAccessUnit.VALIDATE_NONE) {
+			exp2 = this.scheme == scheme && this.opaquePart == authority;
+		} else {
+			exp2 = equals(this.scheme, scheme)
+					&& equals(this.opaquePart, authority);
+		}
+
+		return exp1 && exp2;
 	}
 }
